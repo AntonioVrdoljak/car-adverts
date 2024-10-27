@@ -4,7 +4,6 @@ import com.example.car_adverts.model.CarAdvert;
 import com.example.car_adverts.repository.CarAdvertRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -20,25 +19,22 @@ public class CarAdvertService {
     public List<CarAdvert> getAllCarAdverts(String sortBy) {
         List<CarAdvert> adverts = carAdvertRepository.findAll();
 
-        Comparator<CarAdvert> comparator;
-        switch (sortBy.toLowerCase()) {
-            case "price":
-                comparator = Comparator.comparingInt(CarAdvert::getPrice);
-                break;
-            case "title":
-                comparator = Comparator.comparing(CarAdvert::getTitle);
-                break;
-            case "fueltype":
-                comparator = Comparator.comparing(CarAdvert::getFuelType);
-                break;
-            case "mileage":
-                comparator = Comparator.comparingInt(CarAdvert::getMileage);
-                break;
-            default:
-                comparator = Comparator.comparingInt(CarAdvert::getId);
-        }
+        Comparator<CarAdvert> comparator = switch (sortBy.toLowerCase()) {
+            case "price" -> Comparator.comparingInt(CarAdvert::getPrice);
+            case "title" -> Comparator.comparing(CarAdvert::getTitle);
+            case "fueltype" -> Comparator.comparing(CarAdvert::getFuelType);
+            case "mileage" -> Comparator.comparingInt(CarAdvert::getMileage);
+            default -> Comparator.comparingInt(CarAdvert::getId);
+        };
 
         adverts.sort(comparator);
         return adverts;
+    }
+
+    public CarAdvert createCarAdvert(CarAdvert carAdvert) {
+        if (carAdvertRepository.existsById(carAdvert.getId())) {
+            throw new IllegalArgumentException("Advert with the same ID already exists.");
+        }
+        return carAdvertRepository.save(carAdvert);
     }
 }

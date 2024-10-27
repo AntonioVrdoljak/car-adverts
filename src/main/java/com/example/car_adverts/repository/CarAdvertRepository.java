@@ -62,6 +62,11 @@ public class CarAdvertRepository {
         return carAdvert;
     }
 
+    public void deleteById(int id) {
+        String sql = "DELETE FROM car_adverts WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
     private static class CarAdvertRowMapper implements RowMapper<CarAdvert> {
         @Override
         public CarAdvert mapRow(ResultSet rs, int rowNum) throws SQLException {

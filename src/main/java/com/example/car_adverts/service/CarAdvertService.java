@@ -58,4 +58,11 @@ public class CarAdvertService {
 
         return carAdvertRepository.update(existingAdvert);
     }
+
+    public void deleteCarAdvert(int id) {
+        if (!carAdvertRepository.existsById(id)) {
+            throw new IllegalArgumentException("No car advert with given id was found.");
+        }
+        carAdvertRepository.deleteById(id);
+    }
 }

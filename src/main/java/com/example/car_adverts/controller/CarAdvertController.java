@@ -24,6 +24,17 @@ public class CarAdvertController {
         return carAdvertService.getAllCarAdverts(sortBy);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCarAdvertById(@PathVariable int id) {
+        CarAdvert carAdvert = carAdvertService.getCarAdvertById(id);
+        if (carAdvert != null) {
+            return ResponseEntity.ok(carAdvert);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "No car advert with given id was found."));
+        }
+    }
+
     @PostMapping
     public ResponseEntity<?> createCarAdvert(@RequestBody CarAdvert carAdvert) {
         if (carAdvert.getPrice() < 0 || carAdvert.getId() <= 0) {

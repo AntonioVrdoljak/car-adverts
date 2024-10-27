@@ -43,6 +43,11 @@ public class CarAdvertRepository {
         return carAdvert;
     }
 
+    public CarAdvert findById(int id) {
+        String sql = "SELECT * FROM car_adverts WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, new CarAdvertRowMapper(), id);
+    }
+
     private static class CarAdvertRowMapper implements RowMapper<CarAdvert> {
         @Override
         public CarAdvert mapRow(ResultSet rs, int rowNum) throws SQLException {

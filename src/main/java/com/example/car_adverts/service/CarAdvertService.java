@@ -37,4 +37,8 @@ public class CarAdvertService {
         }
         return carAdvertRepository.save(carAdvert);
     }
+
+    public CarAdvert getCarAdvertById(int id) {
+        return carAdvertRepository.findById(id);
+    }
 }

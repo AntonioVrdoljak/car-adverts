@@ -48,6 +48,20 @@ public class CarAdvertRepository {
         return jdbcTemplate.queryForObject(sql, new CarAdvertRowMapper(), id);
     }
 
+    public CarAdvert update(CarAdvert carAdvert) {
+        String sql = "UPDATE car_adverts SET title = ?, fuelType = ?, price = ?, isNew = ?, mileage = ?, firstRegistration = ? WHERE id = ?";
+        jdbcTemplate.update(sql,
+                carAdvert.getTitle(),
+                carAdvert.getFuelType(),
+                carAdvert.getPrice(),
+                carAdvert.isNew(),
+                carAdvert.getMileage(),
+                carAdvert.getFirstRegistration(),
+                carAdvert.getId()
+        );
+        return carAdvert;
+    }
+
     private static class CarAdvertRowMapper implements RowMapper<CarAdvert> {
         @Override
         public CarAdvert mapRow(ResultSet rs, int rowNum) throws SQLException {

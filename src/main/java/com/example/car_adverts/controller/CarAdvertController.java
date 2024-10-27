@@ -52,4 +52,22 @@ public class CarAdvertController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", e.getMessage()));
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> modifyCarAdvert(@PathVariable int id, @RequestBody CarAdvert carAdvert) {
+        if (carAdvert.getPrice() < 0 || carAdvert.getId() <= 0) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                    .body(Map.of("validation_errors", List.of(
+                            carAdvert.getId() <= 0 ? "Id must be a positive number" : "",
+                            carAdvert.getPrice() < 0 ? "Price cannot be negative" : ""
+                    )));
+        }
+
+        try {
+            CarAdvert updatedAdvert = carAdvertService.modifyCarAdvert(id, carAdvert);
+            return ResponseEntity.ok(updatedAdvert);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+        }
+    }
 }

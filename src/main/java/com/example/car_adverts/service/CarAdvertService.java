@@ -41,4 +41,21 @@ public class CarAdvertService {
     public CarAdvert getCarAdvertById(int id) {
         return carAdvertRepository.findById(id);
     }
+
+    public CarAdvert modifyCarAdvert(int id, CarAdvert carAdvert) {
+        CarAdvert existingAdvert = carAdvertRepository.findById(id);
+        if (existingAdvert == null) {
+            throw new IllegalArgumentException("No car advert with given id was found.");
+        }
+
+        // Update existingAdvert fields with new values
+        existingAdvert.setTitle(carAdvert.getTitle());
+        existingAdvert.setFuelType(carAdvert.getFuelType());
+        existingAdvert.setPrice(carAdvert.getPrice());
+        existingAdvert.setNew(carAdvert.isNew());
+        existingAdvert.setMileage(carAdvert.getMileage());
+        existingAdvert.setFirstRegistration(carAdvert.getFirstRegistration());
+
+        return carAdvertRepository.update(existingAdvert);
+    }
 }
